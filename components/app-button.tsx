@@ -1,7 +1,7 @@
 import React from "react";
 
-const AppButton = ({ text }: { text: string }) => {
-      return <button>{text}</button>;
+const AppButton = ({ text, onClick }: { text: string; onClick?: any }) => {
+      return <button onClick={onClick}>{text}</button>;
 };
 
 export default AppButton;
