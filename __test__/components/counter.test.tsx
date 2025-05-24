@@ -12,17 +12,15 @@ function setup(component: ReactNode) {
 }
 
 describe("Counter", () => {
+      const { user, component } = setup(<AppCounter />);
       it("Should render the counter component and show count: 0", () => {
-            const screen = render(<AppCounter />);
-            const button = screen.getByRole("button");
+            const button = component.getByRole("button");
 
             expect(button).toBeInTheDocument();
             expect(button).toHaveTextContent(/Count: 0/);
       });
 
       it("Should render increament count", async () => {
-            const { user, component } = setup(<AppCounter />);
-
             await user.click(component.getByRole("button"));
             expect(component.getByRole("button")).toHaveTextContent(/Count: 1/);
       });
