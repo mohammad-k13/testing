@@ -78,4 +78,27 @@ describe("Mock", () => {
             });
       });
 
+      describe("vi.spyOn()", () => {
+            const calculator = {
+                  add: (a: number, b: number) => a + b,
+                  subtract: (a: number, b: number) => a - b,
+            };
+
+            test("Can observe calls without changing implementation", () => {
+                  const addSpy = vi.spyOn(calculator, 'add');
+
+                  expect(calculator.add(5, 4)).toBe(9);
+
+                  console.log('addSpy', addSpy);
+                  expect(addSpy).toHaveBeenCalledTimes(1);
+                  expect(addSpy).toHaveBeenCalledWith(5, 4);
+            });
+
+            test("Can mock implementation", () => {
+                  const subtract = vi.spyOn(calculator, 'subtract').mockReturnValue(100);
+
+                  expect(calculator.subtract(2, 1)).toBe(100);
+                  expect(subtract).toHaveBeenCalledTimes(1);
+            })
+      })
 });
