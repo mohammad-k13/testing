@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const AppDebouncedSearch = () => {
+const AppDebouncedSearch = ({onSearch}: {onSearch: (searchTerms: string) => void}) => {
       const [searchTerm, setSearchTerm] = useState("");
 
       useEffect(() => {
@@ -15,11 +15,10 @@ const AppDebouncedSearch = () => {
             };
       }, [searchTerm, onSearch]);
 
-      function onSearch(search: string) {}
 
       return (
             <>
-                  <p data-testid="search-term">{searchTerm}</p>
+                  {/* <p data-testid="search-term">{searchTerm}</p> */}
                   <input
                         type="text"
                         placeholder="Search..."
