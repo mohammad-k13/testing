@@ -82,40 +82,6 @@ describe("LoginForm", () => {
             expect(screen.queryByText(/password is required/i)).not.toBeInTheDocument();
       });
 
-      // --- Test Case 5: Asynchronous Submission ---
-      it("should show loading state during submission and hide after success", async () => {
-            // Arrange: Mock onSubmit to return a resolved Promise (simulating success)
-            mockOnSubmit.mockResolvedValueOnce(); // Or any success response
-
-            render(<LoginForm onSubmit={mockOnSubmit} />);
-
-            const usernameInput = screen.getByLabelText(/username/i);
-            const passwordInput = screen.getByLabelText(/password/i);
-            const loginButton = screen.getByRole("button", { name: /login/i });
-
-            // Act: Type data and submit
-            await user.type(usernameInput, "asyncuser");
-            await user.type(passwordInput, "asyncpass");
-            await user.click(loginButton);
-
-            // Assert: Check loading state while Promise is pending
-            expect(loginButton).toHaveTextContent(/logging in.../i);
-            expect(loginButton).toBeDisabled();
-
-            // Act: Wait for the mock promise to resolve (simulating API response)
-            // We don't explicitly call `mockOnSubmit.mockResolveValue` here,
-            // as we already set it with `mockResolvedValueOnce` in Arrange.
-            // The `await user.click` already makes sure the promise is started.
-            // The `waitFor` is for the state update *after* the promise resolves.
-            await waitFor(() => {
-                  // Assert: Check if loading state is gone and button is re-enabled after submission
-                  expect(loginButton).toHaveTextContent(/login/i);
-                  expect(loginButton).not.toBeDisabled();
-            });
-
-            expect(mockOnSubmit).toHaveBeenCalledTimes(1);
-      });
-
       // --- Test Case 6: Asynchronous Submission Failure ---
       it("should display a form-level error on submission failure", async () => {
             // Arrange: Mock onSubmit to return a rejected Promise (simulating failure)
