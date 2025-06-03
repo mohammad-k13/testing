@@ -1,7 +1,6 @@
-import AppButton from "@/components/app-button";
-import AppCounter from "@/components/app-counter";
+import { Button } from '@/components/ui/button';
+import React from 'react';
 
-const Home = () => {
-  return <AppButton text="test"/>
-}
-export default Home;
+export const HomePage = () => {
+      return <Button>Test</Button>;
+};
