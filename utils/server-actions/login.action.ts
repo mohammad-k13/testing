@@ -52,7 +52,7 @@ export default async function loginAction(formData: { email: string; password: s
             httpOnly: true,
             secure: true,
             path: '/',
-            maxAge: 60 * 60 * 24 * 7, // 7 days
+            maxAge: 60 * 60 * 24 * 7,
       });
 
       redirect('/dashboard');

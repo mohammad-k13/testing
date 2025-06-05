@@ -3,6 +3,7 @@ import * as LoginAction from '@/utils/server-actions/login.action';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { ZodFormattedError } from 'zod';
 
 vi.mock('@/utils/server-actions/login.action', () => ({
       default: vi.fn(),
@@ -94,10 +95,10 @@ describe('LoginForm', () => {
       describe('LoginSchema', () => {
             const formattedError = (data: { email?: string; password?: string }) => {
                   const validation = loginSchema.safeParse(data);
-                  let errors = { email: { _errors: [] }, password: { _errors: [] } };
+                  let errors: any = { email: { _errors: [] }, password: { _errors: [] } };
 
                   if (!validation.success) {
-                        errors = errors;
+                        errors = validation.error.format();
                   }
 
                   return { success: validation.success, errors };
