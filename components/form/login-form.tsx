@@ -27,7 +27,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
 
       const onSubmit = async (data: LoginFormValues) => {
             console.log(data);
-            await LoginAction(data);
+            const {errors, success} = await LoginAction(data);
+            if(!success) {
+                  alert("Faild to login")
+            }
       };
 
       return (
