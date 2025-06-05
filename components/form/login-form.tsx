@@ -7,13 +7,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import LoginAction from '@/utils/server-actions/login.action';
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
       email: z.string().email({ message: 'Invalid email address' }),
       password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
+export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
       const form = useForm<LoginFormValues>({
@@ -24,9 +25,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
             },
       });
 
-      const onSubmit = (data: LoginFormValues) => {
-            // You can handle login logic here
+      const onSubmit = async (data: LoginFormValues) => {
             console.log(data);
+            await LoginAction(data);
       };
 
       return (
