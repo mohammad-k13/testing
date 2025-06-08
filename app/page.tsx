@@ -3,4 +3,4 @@ import React from 'react';
 
 export default function HomePage() {
       return <Button>Test</Button>;
-};
+}

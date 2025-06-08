@@ -22,7 +22,6 @@ const userInfomation = [
       },
 ];
 
-
 export default async function loginAction(formData: { email: string; password: string }) {
       const result = loginSchema.safeParse(formData);
 
