@@ -2,9 +2,14 @@ import { LoginForm, loginSchema } from '@/components/form/login-form';
 import * as LoginAction from '@/utils/server-actions/login.action';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import Link from 'next/link';
+import { ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ZodFormattedError } from 'zod';
 
+vi.mock('next/Link', () => ({
+      __esModule: true,
+      default: vi.fn(({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a>),
+}));
 vi.mock('@/utils/server-actions/login.action', () => ({
       default: vi.fn(),
 }));
@@ -19,6 +24,7 @@ describe('LoginForm', () => {
             const passInput = container.getByLabelText(/password/i) as HTMLInputElement;
             const loginButton = container.getByRole('button', { name: /^login$/i });
             const githubLogin = container.getByRole('button', { name: /^login with github$/i });
+            const signUpLink = container.getByRole('link', { name: /sign up/i });
 
             return {
                   container,
@@ -28,6 +34,7 @@ describe('LoginForm', () => {
                         passInput,
                         loginButton,
                         githubLogin,
+                        signUpLink,
                   },
             };
       };
@@ -43,13 +50,22 @@ describe('LoginForm', () => {
 
       it('Should Render email, password and login with github elements', () => {
             const {
-                  containerEls: { emailInput, githubLogin, loginButton, passInput },
+                  containerEls: { emailInput, githubLogin, loginButton, passInput, signUpLink },
             } = setup();
 
             expect(emailInput).toBeInTheDocument();
             expect(passInput).toBeInTheDocument();
             expect(loginButton).toBeInTheDocument();
             expect(githubLogin).toBeInTheDocument();
+            expect(signUpLink).toBeInTheDocument();
+      });
+
+      it('should have correct href for sign up link', () => {
+            const {
+                  containerEls: { signUpLink },
+            } = setup();
+
+            expect(signUpLink).toHaveAttribute('href', '/auth/signup');
       });
 
       it('User Should be able to fill out forms', async () => {
