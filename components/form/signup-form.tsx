@@ -9,8 +9,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import LoginAction from '@/utils/server-actions/login.action';
 import Link from 'next/link';
+import SignupAction from '@/utils/server-actions/signup.action';
 
-export const loginSchema = z.object({
+export const signupSchema = z.object({
       username: z
             .string()
             .min(3, { message: 'Username must be at least 3 characters' })
@@ -22,11 +23,11 @@ export const loginSchema = z.object({
       password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
-export type SignupFormValues = z.infer<typeof loginSchema>;
+export type SignupFormValues = z.infer<typeof signupSchema>;
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
       const form = useForm<SignupFormValues>({
-            resolver: zodResolver(loginSchema),
+            resolver: zodResolver(signupSchema),
             defaultValues: {
                   username: '',
                   password: '',
@@ -35,6 +36,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
 
       const onSubmit = async (data: SignupFormValues) => {
             console.log(data);
+            await SignupAction(data);
             // const { errors, success } = await LoginAction(data);
             // if (!success) {
             //       alert('Failed to login');
@@ -117,9 +119,9 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                               </Button>
                         </div>
                         <div className="text-center text-sm">
-                              Don't have an account?{' '}
-                              <Link href="/auth/signup" className="underline underline-offset-4">
-                                    Sign up
+                              Don't have an account?
+                              <Link href="/auth/login" className="underline underline-offset-4">
+                                    Login
                               </Link>
                         </div>
                   </form>
