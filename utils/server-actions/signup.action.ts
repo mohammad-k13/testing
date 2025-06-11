@@ -2,7 +2,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { createClient } from '../supabase/client';
+import { createClient } from '@/utils/supabase/client';
 import { z } from 'zod';
 import { signupSchema } from '@/components/form/signup-form';
 
