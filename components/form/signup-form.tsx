@@ -9,22 +9,18 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import SignupAction from '@/utils/server-actions/signup.action';
-
-export const signupSchema = z.object({
-      username: z
-            .string()
-            .min(3, { message: 'Username must be at least 3 characters' })
-            .max(20, { message: 'Username must be at most 20 characters' })
-            .regex(/^[a-zA-Z0-9_]+$/, {
-                  message: 'Username can only contain letters, numbers, and underscores',
-            }),
-      email: z.string().email({ message: 'Invalid email address' }),
-      password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-});
+import SubmitButton from '../ui/custom.tsx/submit-button';
+import signupSchema from '@/utils/form-schema/signup-schema';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
+import Spin from '../ui/custom.tsx/spin';
 
 export type SignupFormValues = z.infer<typeof signupSchema>;
 
 export function SignupForm({ className, ...props }: React.ComponentProps<'form'>) {
+      const { push } = useRouter();
+      const [pending, startTransition] = useTransition();
       const form = useForm<SignupFormValues>({
             resolver: zodResolver(signupSchema),
             defaultValues: {
@@ -34,14 +30,14 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
       });
 
       const onSubmit = async (data: SignupFormValues) => {
-            console.log(data);
-            await SignupAction(data);
-            // const { errors, success } = await LoginAction(data);
-            // if (!success) {
-            //       alert('Failed to login');
-            // }
+            startTransition(async () => {
+                  const { message, success, payload } = await SignupAction(data);
+                  toast[success ? 'success' : 'error'](message);
+                  if (success) {
+                        push(payload.url);
+                  }
+            });
       };
-
       return (
             <Form {...form}>
                   <form
@@ -63,12 +59,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                           <FormItem>
                                                 <FormLabel>Username</FormLabel>
                                                 <FormControl>
-                                                      <Input
-                                                            placeholder="your_username"
-                                                            {...field}
-                                                            // Add autoComplete for better UX
-                                                            autoComplete="username"
-                                                      />
+                                                      <Input placeholder="your_username" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                           </FormItem>
@@ -102,20 +93,13 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                                       </a>
                                                 </div>
                                                 <FormControl>
-                                                      <Input
-                                                            type="password"
-                                                            {...field}
-                                                            // Add autoComplete for better UX
-                                                            autoComplete="current-password"
-                                                      />
+                                                      <Input type="password" {...field} />
                                                 </FormControl>
                                                 <FormMessage />
                                           </FormItem>
                                     )}
                               />
-                              <Button type="submit" className="w-full">
-                                    Create Account
-                              </Button>
+                              <Button className="w-full">{pending ? <Spin /> : 'Create Account'}</Button>
                         </div>
                         <div className="text-center text-sm">
                               Don&apos;t have an account?
