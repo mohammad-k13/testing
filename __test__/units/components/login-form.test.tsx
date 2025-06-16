@@ -11,7 +11,7 @@ vi.mock('next/Link', () => ({
       default: vi.fn(({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a>),
 }));
 vi.mock('@/utils/server-actions/login.action', () => ({
-      default: vi.fn(() => ({success: false})),
+      default: vi.fn(() => ({ success: false })),
 }));
 
 describe('LoginForm', () => {

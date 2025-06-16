@@ -7,7 +7,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import LoginAction from '@/utils/server-actions/login.action';
 import Link from 'next/link';
 import SignupAction from '@/utils/server-actions/signup.action';
 
@@ -119,7 +118,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                               </Button>
                         </div>
                         <div className="text-center text-sm">
-                              Don't have an account?
+                              Don&apos;t have an account?
                               <Link href="/auth/login" className="underline underline-offset-4">
                                     Login
                               </Link>
