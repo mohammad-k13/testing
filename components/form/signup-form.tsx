@@ -26,6 +26,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
             defaultValues: {
                   username: '',
                   password: '',
+                  email: ''
             },
       });
 
