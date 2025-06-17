@@ -1,8 +1,6 @@
 // utils/server-actions/signup.action.ts (or actions/auth.ts)
 'use server';
 
-import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
 import { z } from 'zod';
 import { ServerActionResult } from '@/types/utils/server-action';
 import { CreateUserModel } from '@/app/api/user/route';
@@ -36,7 +34,7 @@ export default async function SignupAction(formData: z.infer<typeof signupSchema
             });
             const data = await res.json();
 
-            return { success: res.ok, message: data.message, payload: { url: '/dashboard' } };
+            return { success: res.ok, message: data.message, payload: res.ok ? { url: '/dashboard' } : undefined };
       } catch (err) {
             return {
                   success: false,

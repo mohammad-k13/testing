@@ -1,4 +1,5 @@
-import { SignupForm, signupSchema } from '@/components/form/signup-form';
+import { SignupForm } from '@/components/form/signup-form';
+import signupSchema from '@/utils/form-schema/signup-schema';
 import SignupAction from '@/utils/server-actions/signup.action';
 import { cleanup, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -12,6 +13,16 @@ vi.mock('next/link', () => ({
 
 vi.mock('@/utils/server-actions/signup.action', () => ({
       default: vi.fn(),
+}));
+
+vi.mock('next/navigation', () => ({
+      useRouter: vi.fn(() => ({
+            push: vi.fn(),
+            replace: vi.fn(),
+            prefetch: vi.fn(),
+      })),
+      usePathname: vi.fn(() => '/'), // Mock current path
+      useSearchParams: vi.fn(() => new URLSearchParams()), // Mock search params
 }));
 
 describe('SignUpForm', () => {
