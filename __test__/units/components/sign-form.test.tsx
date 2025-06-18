@@ -1,4 +1,5 @@
-import { SignupForm, signupSchema } from '@/components/form/signup-form';
+import { SignupForm } from '@/components/form/signup-form';
+import signupSchema from '@/utils/form-schema/signup-schema';
 import SignupAction from '@/utils/server-actions/signup.action';
 import { cleanup, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -11,7 +12,13 @@ vi.mock('next/link', () => ({
 }));
 
 vi.mock('@/utils/server-actions/signup.action', () => ({
-      default: vi.fn(),
+      default: vi.fn(() => ({ success: true, message: '', payload: { url: '' } })),
+}));
+
+vi.mock('next/navigation', () => ({
+      useRouter: () => ({
+            push: vi.fn(),
+      }),
 }));
 
 describe('SignUpForm', () => {
@@ -50,6 +57,7 @@ describe('SignUpForm', () => {
             email: 'test@gmai.com',
             password: '123412341234',
       };
+
 
       beforeEach(() => {
             vi.clearAllMocks(); // reset mock call times;
