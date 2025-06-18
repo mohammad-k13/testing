@@ -14,8 +14,8 @@ export async function POST(req: Request) {
 
       const { error, status, statusText } = await supabase.from('users').insert({ email, password, username, role });
 
-      console.log('errre', error);
       if (error) {
+            console.log("user POST -- err", error)
             return new Response(JSON.stringify({ message: error.message }), { status, statusText });
       }
 

@@ -1,8 +1,5 @@
-// utils/server-actions/signup.action.ts (or actions/auth.ts)
 'use server';
 
-import { redirect } from 'next/navigation';
-import { createClient } from '@/utils/supabase/client';
 import { z } from 'zod';
 import { ServerActionResult } from '@/types/utils/server-action';
 import { CreateUserModel } from '@/app/api/user/route';
@@ -34,10 +31,12 @@ export default async function SignupAction(formData: z.infer<typeof signupSchema
                         'Content-type': 'application/json',
                   },
             });
+            console.log(res);
             const data = await res.json();
 
             return { success: res.ok, message: data.message, payload: { url: '/dashboard' } };
       } catch (err) {
+            console.log('SignupAction - err', err);
             return {
                   success: false,
                   message: 'Faild to Fetch',
