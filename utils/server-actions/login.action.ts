@@ -1,10 +1,10 @@
 // utils/server-actions/login.action.ts
 'use server';
 
-import { loginSchema } from '@/components/form/login-form';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import loginSchema from '../form-schema/login-schema';
 
 // Fake user database
 const userInfomation = [

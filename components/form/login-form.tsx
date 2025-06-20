@@ -9,11 +9,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import LoginAction from '@/utils/server-actions/login.action';
 import Link from 'next/link';
+import loginSchema from '@/utils/form-schema/login-schema';
 
-export const loginSchema = z.object({
-      email: z.string().email({ message: 'Invalid email address' }),
-      password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
-});
+
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
@@ -27,7 +25,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
       });
 
       const onSubmit = async (data: LoginFormValues) => {
-            console.log(data);
             const { success } = await LoginAction(data);
             if (!success) {
                   alert('Faild to login');
@@ -66,15 +63,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
                                     name="password"
                                     render={({ field }) => (
                                           <FormItem>
-                                                <div className="flex items-center">
-                                                      <FormLabel>Password</FormLabel>
-                                                      <a
-                                                            href="#"
-                                                            className="ml-auto text-sm underline-offset-4 hover:underline"
-                                                      >
-                                                            Forgot your password?
-                                                      </a>
-                                                </div>
+                                                <FormLabel>Password</FormLabel>
                                                 <FormControl>
                                                       <Input type="password" {...field} />
                                                 </FormControl>
