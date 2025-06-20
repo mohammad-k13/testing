@@ -1,58 +1,49 @@
-// utils/server-actions/login.action.ts
 'use server';
 
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { ServerActionResult } from '@/types/utils/server-action';
 import { z } from 'zod';
 import loginSchema from '../form-schema/login-schema';
+import { LoginBody } from '@/app/api/auth/login/route';
 
-// Fake user database
-const userInfomation = [
-      {
-            userID: 1,
-            email: 'user@gmail.com',
-            password: 'useruser',
-            role: 'user',
-      },
-      {
-            userID: 2,
-            email: 'admin@gmail.com',
-            password: 'adminadmin',
-            role: 'admin',
-      },
-];
-
-export default async function loginAction(formData: { email: string; password: string }) {
+export default async function loginAction(formData: z.infer<typeof loginSchema>): Promise<ServerActionResult<any>> {
       const result = loginSchema.safeParse(formData);
 
       if (!result.success) {
             return {
                   success: false,
-                  errors: result.error.flatten().fieldErrors,
+                  message: 'Validation failed.',
+                  payload: result.error.flatten(),
             };
       }
 
       const { email, password } = result.data;
 
-      const user = userInfomation.find((item) => item.email === email && item.password === password);
+      try {
+            const body: LoginBody = {
+                  email,
+                  password,
+            };
 
-      if (!user) {
+            const res = await fetch('/api/login', {
+                  method: 'POST',
+                  headers: {
+                        'Content-type': 'application/json',
+                  },
+                  body: JSON.stringify(body),
+            });
+
+            const data = await res.json();
+            const { message } = data;
+
+            const payload = res.ok ? { url: '/dashboard' } : null;
+            return { success: res.ok, message, payload };
+      } catch (err) {
+            console.log('LoginAction - err', err);
+
             return {
                   success: false,
-                  errors: {
-                        credentials: ['Invalid email or password'],
-                  },
+                  message: 'Faild to fetch',
+                  payload: null,
             };
       }
-
-      // Set a secure cookie
-      const cookieStore = await cookies();
-      cookieStore.set('token', JSON.stringify(user), {
-            httpOnly: true,
-            secure: true,
-            path: '/',
-            maxAge: 60 * 60 * 24 * 7,
-      });
-
-      redirect('/dashboard');
 }

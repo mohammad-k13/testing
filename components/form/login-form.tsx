@@ -7,15 +7,17 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import LoginAction from '@/utils/server-actions/login.action';
 import Link from 'next/link';
 import loginSchema from '@/utils/form-schema/login-schema';
-
-
+import loginAction from '@/utils/server-actions/login.action';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm({ className, ...props }: React.ComponentProps<'form'>) {
+      const { push } = useRouter();
+
       const form = useForm<LoginFormValues>({
             resolver: zodResolver(loginSchema),
             defaultValues: {
@@ -25,9 +27,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<'form'>)
       });
 
       const onSubmit = async (data: LoginFormValues) => {
-            const { success } = await LoginAction(data);
-            if (!success) {
-                  alert('Faild to login');
+            const { success, message, payload } = await loginAction(data);
+
+            toast[success ? 'success' : 'error'](message);
+            if (success) {
+                  push(payload.url);
             }
       };
 
