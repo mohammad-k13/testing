@@ -1,4 +1,3 @@
-'use server';
 
 import { ServerActionResult } from '@/types/utils/server-action';
 import { z } from 'zod';

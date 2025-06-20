@@ -1,4 +1,5 @@
-import { LoginForm, loginSchema } from '@/components/form/login-form';
+import { LoginForm } from '@/components/form/login-form';
+import loginSchema from '@/utils/form-schema/login-schema';
 import * as LoginAction from '@/utils/server-actions/login.action';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,8 +11,15 @@ vi.mock('next/Link', () => ({
       __esModule: true,
       default: vi.fn(({ children, href }: { children: ReactNode; href: string }) => <a href={href}>{children}</a>),
 }));
+
 vi.mock('@/utils/server-actions/login.action', () => ({
       default: vi.fn(() => ({ success: false })),
+}));
+
+vi.mock('next/navigation', () => ({
+      useRouter: () => ({
+            push: vi.fn(),
+      }),
 }));
 
 describe('LoginForm', () => {

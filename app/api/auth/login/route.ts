@@ -48,9 +48,9 @@ export async function POST(req: Request) {
             const sessionToken = JSON.stringify({ email, password });
             (await cookies()).set('token', sessionToken);
 
-            successResponse(`Welcom ${wantedUser.username}`);
+            successResponse(`Welcome ${wantedUser.username}`);
       } else {
             // no -> send invalid username & password
-            notValidDataResponse('Username or password');
+            notValidDataResponse('Email or password');
       }
 }

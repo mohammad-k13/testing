@@ -5,7 +5,7 @@
 // import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 
 import SignupAction from '@/utils/server-actions/signup.action';
-import { beforeEach, afterEach, describe, expect, it } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 
 // const mocks = vi.hoisted(() => {
 //       const mockSignUp = vi.fn(
@@ -117,6 +117,16 @@ import { beforeEach, afterEach, describe, expect, it } from 'vitest';
 //       });
 // });
 
+const mocked = vi.hoisted(() => {
+      const mockedFetch = vi.fn();
+
+      return {
+            mockedFetch,
+      };
+});
+
+global.fetch = mocked.mockedFetch;
+
 describe('SignupAction', () => {
       const inValidData = {
             username: 'w34',
@@ -139,6 +149,10 @@ describe('SignupAction', () => {
       });
 
       it('Should create user and return currect result when data validation successed', async () => {
+            mocked.mockedFetch.mockImplementationOnce(() => {
+                  return new Response(JSON.stringify({ message: 'User created successfully!' }), { status: 200 });
+            });
+
             const { message, success, payload } = await SignupAction(validData);
 
             expect(success).toBe(true);

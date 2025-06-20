@@ -8,10 +8,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import loginSchema from '@/utils/form-schema/login-schema';
 import loginAction from '@/utils/server-actions/login.action';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import loginSchema from '@/utils/form-schema/login-schema';
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
