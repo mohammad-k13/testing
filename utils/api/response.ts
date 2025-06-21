@@ -20,6 +20,10 @@ export function notValidDataResponse(unit?: string) {
       return sendResponse(createResponseBody(`${unit} isn't valid`), { status: 401 });
 }
 
+export function internalServerError(payload?: any) {
+      return sendResponse(createResponseBody('Internal Server Error'), { status: 500 });
+}
+
 // Success Response
 export function successResponse(message?: string) {
       return sendResponse(createResponseBody(message || ''), { status: 200 });

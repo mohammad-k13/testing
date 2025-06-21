@@ -1,3 +1,4 @@
+'use server';
 
 import { ServerActionResult } from '@/types/utils/server-action';
 import { z } from 'zod';
@@ -16,6 +17,8 @@ export default async function loginAction(formData: z.infer<typeof loginSchema>)
       }
 
       const { email, password } = result.data;
+      console.log(email);
+      console.log(password);
 
       try {
             const body: LoginBody = {
@@ -23,13 +26,17 @@ export default async function loginAction(formData: z.infer<typeof loginSchema>)
                   password,
             };
 
-            const res = await fetch('/api/login', {
+            const res = await fetch(`${process.env.CURRECT_DOMAIN}/api/auth/login`, {
                   method: 'POST',
                   headers: {
                         'Content-type': 'application/json',
                   },
-                  body: JSON.stringify(body),
+                  body: JSON.stringify({
+                        email,
+                        password,
+                  }),
             });
+            console.log(res)
 
             const data = await res.json();
             const { message } = data;
