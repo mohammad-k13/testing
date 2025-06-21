@@ -24,8 +24,6 @@ const userData: Omit<User, 'created_at' | 'id' | 'role'>[] = [
 ];
 
 export async function POST(req: Request) {
-      console.log('login route runded', req);
-
       try {
             // get user data -> username, password
             const body = (await req.json()) as LoginBody;
@@ -33,16 +31,16 @@ export async function POST(req: Request) {
 
             // validtion user data
             if (!password || !email) {
-                  inValidCredentionalsResponse();
+                  return inValidCredentionalsResponse();
             }
 
             // find if user exist
-            const wantedUser = userData.find((user) => user.username === email);
+            const wantedUser = userData.find((user) => user.email === email);
 
             // check user is exist
             if (!wantedUser) {
                   // no -> send 404 response
-                  notFoundResponse('User');
+                  return notFoundResponse('User');
             }
 
             // yes -> check password is currect
@@ -52,10 +50,10 @@ export async function POST(req: Request) {
                   const sessionToken = JSON.stringify({ email, password });
                   (await cookies()).set('token', sessionToken);
 
-                  successResponse(`Welcome ${wantedUser.username}`);
+                  return successResponse(`Welcome ${wantedUser.username}`);
             } else {
                   // no -> send invalid username & password
-                  notValidDataResponse('Email or password');
+                  return notValidDataResponse('Email or password');
             }
       } catch (err) {
             console.log('Login route -- err', err);
