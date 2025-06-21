@@ -85,12 +85,6 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                           <FormItem>
                                                 <div className="flex items-center">
                                                       <FormLabel>Password</FormLabel>
-                                                      <a
-                                                            href="#"
-                                                            className="ml-auto text-sm underline-offset-4 hover:underline"
-                                                      >
-                                                            Forgot your password?
-                                                      </a>
                                                 </div>
                                                 <FormControl>
                                                       <Input type="password" {...field} />
