@@ -34,7 +34,7 @@ export default async function SignupAction(formData: z.infer<typeof signupSchema
             console.log(res);
             const data = await res.json();
 
-            return { success: res.ok, message: data.message, payload: { url: '/dashboard' } };
+            return { success: res.ok, message: data.message, payload: res.ok ? { url: '/dashboard' } : undefined };
       } catch (err) {
             console.log('SignupAction - err', err);
             return {

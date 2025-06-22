@@ -21,6 +21,16 @@ vi.mock('next/navigation', () => ({
       }),
 }));
 
+vi.mock('next/navigation', () => ({
+      useRouter: vi.fn(() => ({
+            push: vi.fn(),
+            replace: vi.fn(),
+            prefetch: vi.fn(),
+      })),
+      usePathname: vi.fn(() => '/'), // Mock current path
+      useSearchParams: vi.fn(() => new URLSearchParams()), // Mock search params
+}));
+
 describe('SignUpForm', () => {
       const setup = () => {
             const container = render(<SignupForm />);
