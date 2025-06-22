@@ -9,7 +9,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import SignupAction from '@/utils/server-actions/signup.action';
-import SubmitButton from '../ui/custom.tsx/submit-button';
 import signupSchema from '@/utils/form-schema/signup-schema';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -25,6 +24,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
             resolver: zodResolver(signupSchema),
             defaultValues: {
                   username: '',
+                  email: '',
                   password: '',
             },
       });
@@ -61,7 +61,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                                 <FormControl>
                                                       <Input placeholder="your_username" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage data-testid="username-validation-error-msg" />
                                           </FormItem>
                                     )}
                               />
@@ -74,7 +74,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                                 <FormControl>
                                                       <Input placeholder="m@example.com" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage data-testid="email-validation-error-msg" />
                                           </FormItem>
                                     )}
                               />
@@ -89,7 +89,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<'form'>
                                                 <FormControl>
                                                       <Input type="password" {...field} />
                                                 </FormControl>
-                                                <FormMessage />
+                                                <FormMessage data-testid="password-validation-error-msg" />
                                           </FormItem>
                                     )}
                               />

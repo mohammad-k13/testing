@@ -3,7 +3,6 @@
 import { ServerActionResult } from '@/types/utils/server-action';
 import { z } from 'zod';
 import loginSchema from '../form-schema/login-schema';
-import { LoginBody } from '@/app/api/auth/login/route';
 
 export default async function loginAction(formData: z.infer<typeof loginSchema>): Promise<ServerActionResult<any>> {
       const result = loginSchema.safeParse(formData);
@@ -21,7 +20,7 @@ export default async function loginAction(formData: z.infer<typeof loginSchema>)
       console.log(password);
 
       try {
-            const body: LoginBody = {
+            const body: any = {
                   email,
                   password,
             };

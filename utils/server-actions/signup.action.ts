@@ -2,7 +2,6 @@
 
 import { z } from 'zod';
 import { ServerActionResult } from '@/types/utils/server-action';
-import { CreateUserModel } from '@/app/api/user/route';
 import signupSchema from '../form-schema/signup-schema';
 
 export default async function SignupAction(formData: z.infer<typeof signupSchema>): Promise<ServerActionResult<any>> {
@@ -17,7 +16,7 @@ export default async function SignupAction(formData: z.infer<typeof signupSchema
       }
       const { username, email, password } = result.data;
       try {
-            const body: CreateUserModel = {
+            const body: any = {
                   email,
                   password,
                   role: 'user',

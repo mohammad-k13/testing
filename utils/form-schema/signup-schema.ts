@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const signupSchema = z.object({
       username: z
@@ -12,4 +12,4 @@ const signupSchema = z.object({
       password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
 
-export default signupSchema
+export default signupSchema;
