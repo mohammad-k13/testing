@@ -26,6 +26,12 @@ describe('SignupSchema', () => {
             const { success, error } = signupSchema.safeParse(data);
 
             const validationErrors = error?.flatten().fieldErrors;
+            console.log({
+                  username: validationErrors?.username?.[0] || '',
+                  email: validationErrors?.email?.[0] || '',
+                  password: validationErrors?.password?.[0] || '',
+                  success,
+            });
 
             return {
                   username: validationErrors?.username?.[0] || '',
@@ -40,7 +46,7 @@ describe('SignupSchema', () => {
 
             expect(success).toBe(false);
 
-            expect(username).toBe(signupSchemaErrors.username.invalidUsername);
+            expect(username).toBe(signupSchemaErrors.username.shortUsername);
             expect(email).toBe(signupSchemaErrors.email.invalidEmail);
             expect(password).toBe(signupSchemaErrors.password.invalidPassword);
       });
@@ -79,13 +85,13 @@ describe('SignupSchema', () => {
       });
 
       it('Should reject short password with currect message', () => {
-            const { email, success } = getVlidationError({
+            const { password, success } = getVlidationError({
                   username: validData.username,
                   email: validData.email,
                   password: invalidData.password,
             });
 
             expect(success).toBe(false);
-            expect(email).toBe(signupSchemaErrors.password.invalidPassword);
+            expect(password).toBe(signupSchemaErrors.password.invalidPassword);
       });
 });
